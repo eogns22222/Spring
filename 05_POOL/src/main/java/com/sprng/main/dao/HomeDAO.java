@@ -73,6 +73,7 @@ public class HomeDAO {
 			logger.info("pool connection : " + conn);
 			if(conn != null) {
 				success = true;
+				conn.close(); 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
