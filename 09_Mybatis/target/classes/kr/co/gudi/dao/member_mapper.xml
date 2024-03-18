@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- 이 xml 은 어떤 interface 를 참조해서 사용해야 하는가? -->
+<mapper namespace="kr.co.gudi.dao.MemberDAO">
+	
+	<!-- id 는 dao 의 실행 method 명과 동일해야 한다. -->
+	<!--  mybatis 가 알아서 해준 내용들..
+		connection 가져오기
+		실행객체 생성하기(PreparedStatement | Statement)
+		? 대응
+		쿼리 실행(executeQuery | executeUpdate)
+		결과값 반환
+		자원반납
+	 -->
+	<insert id="join">
+		INSERT INTO member (id,pw,name,age,gender,email)
+			VALUES(#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
+	</insert>
+	
+</mapper>
