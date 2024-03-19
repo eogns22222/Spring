@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- 이 xml 은 어떤 interface 를 참조해서 사용해야 하는가? -->
+<mapper namespace="kr.co.gudi.dao.MemberDAO">
+	
+	<!-- parameter 가 뭉쳐서 들어올때 어떤 형태로 들어오는지 명시해 줘야 한다. -->
+	<insert id="join" parameterType="map">
+		INSERT INTO member(id,pw,name,age,gender,email)
+			VALUES(#{id},#{pw},#{name},#{age},#{gender},#{email})
+	</insert>
+	
+	<!-- select 는 결과를 받아오므로 어떤 형태로 받아올지 지정해 줘야한다. -->
+	<select id="login" resultType="String">
+		SELECT id FROM member 
+			WHERE id = #{param1} AND pw = #{param2} 
+	</select>
+	
+	<!--  DTO 로 받을 경우 DTO 의 풀 경로를 명시한다.  -->
+	<select id="list" resultType="kr.co.gudi.dto.MemberDTO">
+		SELECT id,name,age,email FROM member
+	</select>
+	
+	<select id="detail" resultType="kr.co.gudi.dto.MemberDTO">
+		SELECT id,pw,name,age,gender,email FROM member WHERE id = #{param1}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM member where id = #{param1}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
