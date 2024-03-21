@@ -17,4 +17,6 @@ public interface BoardDAO {
 	
 	BoardDTO detail(String idx);
 
+	int update(Map<String, String> param);
+
 }

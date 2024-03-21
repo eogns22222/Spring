@@ -37,6 +37,14 @@ public class BoardService {
 		dao.upHit(idx); // 조회수 증가
 		return dao.detail(idx);
 	}
+
+	public BoardDTO updateForm(String idx) {
+		return dao.detail(idx);
+	}
+
+	public int update(Map<String, String> param) {
+		return dao.update(param);
+	}
 }
 
 

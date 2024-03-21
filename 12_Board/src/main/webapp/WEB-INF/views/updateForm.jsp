@@ -11,24 +11,28 @@
 </style>
 </head>
 <body>
-	<form action="write" method="post">
+	<form action="update" method="post">
 		<table>
 			<tr>
+				<th>글번호</th>
+				<td>${bbs.idx}<input type="hidden" name="idx" value="${bbs.idx}"></td>
+			</tr>
+			<tr>
 				<th>제목</th>
-				<td><input type="text" name="subject"></td>
+				<td><input type="text" name="subject" value="${bbs.subject}"></td>
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><input type="text" name="user_name" value="${sessionScope.loginId}"></td>
+				<td><input type="text" name="user_name" value="${bbs.user_name}"></td>
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td><textarea name="content"></textarea></td>
+				<td><textarea name="content">${bbs.content}</textarea></td>
 			</tr>
 			<tr>
 				<th colspan="2">
-					<input type="button" onclick="location.href='./list'" value="리스트">
-					<button>글쓰기</button>
+					<input type="button" onclick="location.href='./list'" value="취소">
+					<button>저장</button>
 				</th>
 			</tr>
 		</table>

@@ -95,6 +95,34 @@ public class BoardController {
 		return page;
 	}
 	
+	@RequestMapping(value = "/updateForm")
+	public String updateForm(String idx, HttpSession session, Model model) {
+		String page = "redirect:/list";
+		logger.info("update form idx = " + idx);
+		
+		if(session.getAttribute("loginId") != null) {
+			BoardDTO bbs = service.updateForm(idx);
+			model.addAttribute("bbs", bbs);
+			page = "updateForm";
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update(HttpSession session, @RequestParam Map<String, String> param) {
+		logger.info("업데이트");
+		String page = "redirect:/list";
+		
+		if(session.getAttribute("loginId") != null) {
+			page = "redirect:/detail?idx=" + param.get("idx");
+			int row = service.update(param);
+			logger.info("수정된 값 : " + row);
+		}
+		
+		return page;
+	}
+	
 }
 
 

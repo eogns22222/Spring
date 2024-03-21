@@ -14,7 +14,8 @@
 	</delete>
 	
 	<insert id="write" parameterType="map">
-		INSERT INTO bbs(subject,user_name,content)VALUES(#{subject},#{user_name},#{content})
+		INSERT INTO bbs(subject,user_name,content)
+			VALUES(#{subject},#{user_name},#{content})
 	</insert>
 	
 	<update id="upHit">
@@ -22,9 +23,13 @@
 	</update>
 	
 	<select id="detail" resultType="kr.co.gudi.board.dto.BoardDTO">
-		SELECT * FROM bbs WHERE idx = #{param1}
+		SELECT idx,bHit,subject,user_name,content FROM bbs WHERE idx = #{param1}
 	</select>
 	
+	<update id="update" parameterType="map">
+		UPDATE bbs SET subject = #{subject},user_name = #{user_name},content = #{content}
+			WHERE idx = #{idx}
+	</update>
 	
 </mapper>
 

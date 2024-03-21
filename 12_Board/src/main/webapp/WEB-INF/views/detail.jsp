@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<th colspan="2">
-				<input type="button" onclick="location.href='./'" value="리스트">
+				<input type="button" onclick="location.href='./list'" value="리스트">
 				<button onclick="location.href='updateForm?idx=${bbs.idx}'">수정</button>
 			</th>
 		</tr>
