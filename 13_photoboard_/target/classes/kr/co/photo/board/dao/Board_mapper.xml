@@ -13,7 +13,17 @@
 		DELETE FROM bbs WHERE idx = #{param1}
 	</delete>
 	
-	<insert id = "write" parameterType="map">
+	<!-- 조건 2. 추가 설정 
+		useGeneratedKeys="true" <- insert 후 생성된 키 가져오기 설정
+		keyColumn="idx" <- 가져올 키의 이름
+		keyProperty="idx" <- 키를 저장할 DTO 속성(필드)의 이름
+	 -->
+	
+	<insert id = "write" 
+	useGeneratedKeys="true"
+	keyColumn="idx"
+	keyProperty="idx"
+	parameterType="kr.co.photo.board.dto.BoardDTO">
 		INSERT INTO bbs(
 			subject, user_name,content
 			)values(
@@ -33,6 +43,16 @@
 		UPDATE bbs SET subject = #{subject}, user_name = #{user_name}, content = #{content}
 			WHERE idx = #{idx}
 	</update>
+	
+	<insert id="fileWrite">
+		INSERT INTO photo(ori_filename,new_filename,idx)
+			VALUES(#{param1},#{param2},#{param3})
+	</insert>
+	
+	<select id="photos" resultType="kr.co.photo.board.dto.PhotoDTO">
+		SELECT ori_filename, new_filename, file_idx
+			FROM photo WHERE idx = #{param1}
+	</select>
 	
 </mapper>
 

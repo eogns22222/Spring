@@ -10,7 +10,8 @@
 </style>
 </head>
 <body>
-	<form action="write" method = "post">
+	<!-- post 방식으로 보낼것, form-data 가 여러 파트로 구성되어 있다고 알릴것 -->
+	<form action="write" method = "post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>제목</th>
@@ -23,6 +24,10 @@
 		<tr>
 			<th>내용</th>
 			<td><textarea name = "content">${member.content}</textarea></td>
+		</tr>
+		<tr>
+			<th>사진</th>
+			<td><input type="file" name="photos" multiple="multiple"/></td>
 		</tr>
 		<tr>
 			<th colspan="2">

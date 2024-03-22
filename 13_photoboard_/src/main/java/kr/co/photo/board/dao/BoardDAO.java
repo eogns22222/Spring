@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.co.photo.board.dto.BoardDTO;
+import kr.co.photo.board.dto.PhotoDTO;
 
 public interface BoardDAO {
 
@@ -11,13 +12,17 @@ public interface BoardDAO {
 
 	void del(String idx);
 
-	int write(Map<String, String> param);
+	int write(BoardDTO dto);
 
 	BoardDTO detail(String idx);
 
 	void upHit(String idx);
 
-	void update(Map<String, String> param);
+	int update(Map<String, String> param);
+
+	void fileWrite(String fileName, String newFileName, int idx);
+
+	List<PhotoDTO> photos(String idx);
 
 
 

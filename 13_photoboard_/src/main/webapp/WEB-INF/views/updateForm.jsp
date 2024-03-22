@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-	<form action="update" method = "post">
+	<form action="update" method = "post"  enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>글번호</th>
@@ -28,6 +28,21 @@
 			<th>내용</th>
 			<td><textarea name = "content">"${bbs.content}"</textarea></td>
 		</tr>
+		<tr>
+			<th>사진</th>
+			<td><input type="file" name="photos" multiple="multiple"/></td>
+		</tr>
+		<c:if test="${photos.size() > 0}">
+			<tr>
+				<th>이미지</th>
+				<td>
+					<c:forEach items="${photos}" var="photo">
+						<img src="/photo/${photo.new_filename}">
+						<br/><br/>
+					</c:forEach>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<th colspan="2">
 				<input type= button onclick="location.href='./list'" value="목록"/>

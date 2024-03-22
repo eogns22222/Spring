@@ -32,6 +32,17 @@
 			<th>내용</th>
 			<td>${bbs.content}</td>
 		</tr>
+		<c:if test="${photos.size() > 0}">
+			<tr>
+				<th>이미지</th>
+				<td>
+					<c:forEach items="${photos}" var="photo">
+						<img src="/photo/${photo.new_filename}">
+						<br/><br/>
+					</c:forEach>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<th colspan="2">
 				<input type= button onclick="location.href='list '" value="목록"/>
@@ -44,3 +55,21 @@
 <script>
 </script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

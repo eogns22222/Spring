@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.photo.board.dto.BoardDTO;
 import kr.co.photo.board.service.BoardService;
@@ -49,9 +50,9 @@ public class BoardController {
 		logger.info("삭제요청");
 		String page = "redirect:/";
 		if(session.getAttribute("loginId")!=null) {
-		service.del(idx);
+			service.del(idx);
 		
-		page="redirect:/list";
+			page="redirect:/list";
 		}
 		
 		return page;
@@ -65,12 +66,13 @@ public class BoardController {
 		return "writeForm";
 	}
 	
+	// multipart 는 다른 파라메터 보다 앞에 있어야 함
 	@RequestMapping(value="/write", method = RequestMethod.POST)
-	public String write(HttpSession session, @RequestParam Map<String,String>param ) {
+	public String write(MultipartFile[] photos, HttpSession session, @RequestParam Map<String,String>param) {
 		logger.info("글작성 요청");
 		String page = "redirect:/list";
 		if(session.getAttribute("loginId")!=null) {
-			int row = service.write(param);
+			int row = service.write(photos, param);
 			if(row < 1) {
 				page ="writeForm";
 			}
@@ -93,8 +95,10 @@ public class BoardController {
 		
 		if(session.getAttribute("loginId")!= null) {
 			page = "detail";
-			BoardDTO dto = service.detail(idx);
-			model.addAttribute("bbs", dto);
+//			BoardDTO dto = service.detail(idx);
+//			model.addAttribute("bbs", dto);
+			// model 줄테니 여기에 bbs 와 photos 담아와라
+			service.detail(idx, model);
 		}
 		
 		return page;
@@ -108,22 +112,34 @@ public class BoardController {
 		
 		if(session.getAttribute("loginId")!= null) {
 			page = "updateForm";
-			BoardDTO dto = service.updateForm(idx);
-			model.addAttribute("bbs", dto);
+			service.updateForm(idx, model);
 		}
 		
 		return page;
 	}
 	
 	// 수정
+//	@RequestMapping(value = "/update", method = RequestMethod.POST)
+//	public String update(HttpSession session, @RequestParam Map<String,String> param) {
+//		logger.info("수정");
+//		String page = "redirect:/list";
+//		
+//		if(session.getAttribute("loginId") != null) {
+//			page = "redirect:/detail?idx=" + param.get("idx");
+//			service.update(param);
+//		}
+//		
+//		return page;
+//	}
+	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(HttpSession session, @RequestParam Map<String,String> param) {
+	public String update(MultipartFile[] photos, HttpSession session, @RequestParam Map<String,String> param) {
 		logger.info("수정");
 		String page = "redirect:/list";
 		
 		if(session.getAttribute("loginId") != null) {
 			page = "redirect:/detail?idx=" + param.get("idx");
-			service.update(param);
+			service.update(photos, param);
 		}
 		
 		return page;
