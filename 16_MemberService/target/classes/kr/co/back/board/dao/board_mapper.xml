@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="kr.co.back.board.dao.BoardDAO">
+
+	<select id="list" resultType="kr.co.back.board.dto.BoardDTO">
+		SELECT 
+			(SELECT count(new_filename) from photo where idx = b.idx) as img_cnt,
+			b.idx, 
+			b.subject, 
+			b.user_name, 
+			b.bHit, 
+			b.reg_date 
+			FROM bbs b
+	</select>
+	
+	<select id="photos" resultType="String">
+		SELECT new_filename FROM photo WHERE idx = #{param1}
+	</select>
+	
+	<delete id="del">
+		DELETE FROM bbs WHERE idx = #{param1}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
