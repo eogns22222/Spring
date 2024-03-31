@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.back.board.dao.BoardDAO">
+
+	<select id="list" resultType="kr.co.back.board.dto.BoardDTO">
+		SELECT
+		(SELECT COUNT(new_filename) FROM photo p WHERE p.idx = a.idx) as imt_cnt,
+		a.idx,
+		a.subject,
+		a.user_name,
+		a.bHit,
+		a.reg_date
+		FROM bbs a LIMIT #{param1} OFFSET #{param2}
+	</select>
+	
+	<select id="allCount" resultType="int">
+		SELECT CEIL(count(idx)/#{param1}) FROM bbs
+	</select>
+	
+	<insert id="write"
+	useGeneratedKeys="true"
+	keyColumn="idx"
+	keyProperty="idx"
+	parameterType="kr.co.back.board.dto.BoardDTO"
+	>
+		INSERT INTO bbs(subject, user_name, content)
+			VALUES(#{subject},#{user_name},#{content})
+	</insert>
+	
+	<insert id="writeFile">
+		INSERT INTO photo(ori_filename,new_filename,idx)
+			VALUES(#{param1},#{param2},#{param3})
+	</insert>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
