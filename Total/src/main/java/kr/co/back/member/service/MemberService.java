@@ -1,5 +1,6 @@
 package kr.co.back.member.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,30 +17,38 @@ public class MemberService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MemberDAO memberDAO;
 	
-	public int join(Map<String, String> params) {
-		int row = 0;
+	public int join(Map<String, String> param) {
+		int row = -1;
 		
-		row = memberDAO.join(params);
+		row = memberDAO.join(param);
 		
-		String perm = params.get("auth");
+		String perm = param.get("auth");
+		
 		if(perm != null) {
-			memberDAO.setPermission(params.get("id"), perm);
+			memberDAO.setPermission(param.get("id"), perm);
 		}
 		
 		return row;
-	}
-
-	public int overlay(String id) {
-		return memberDAO.overlay(id);
 	}
 
 	public MemberDTO login(String id, String pw) {
 		return memberDAO.login(id, pw);
 	}
 
+	public int overlay(String id) {
+		return memberDAO.overlay(id);
+	}
 
+	public List<MemberDTO> list() {
+		return memberDAO.list();
+	}
 	
 }
+
+
+
+
+
 
 
 

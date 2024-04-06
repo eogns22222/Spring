@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet"href="resources/common.css"type="text/css">
+<link rel="stylesheet"href="resources/css/common.css"type="text/css">
 <style>
 </style>
 </head>
@@ -46,7 +46,7 @@
 		<tr>
 			<th colspan="2">
 				<input type= button onclick="location.href='list '" value="목록"/>
-				<button onclick = "location.href='updateForm?idx=${bbs.idx}'">수정</button>
+				<button onclick = "location.href='updateForm.go?idx=${bbs.idx}'">수정</button>
 			</th>
 		</tr>
 

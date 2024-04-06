@@ -19,7 +19,7 @@
 		</tr>	
 		<tr>
 			<th>작성자</th>
-			<td>${sessionScope.loginInfo.id}<input type ="hidden" name = "user_name" value="${sessionScope.loginInfo.id}"/></td>
+			<td>${sessionScope.loginInfo.id}<input type ="hidden" name = "user_name" value="${sessionScope.loginId}"/></td>
 		</tr>
 		<tr>
 			<th>내용</th>

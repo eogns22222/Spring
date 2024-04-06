@@ -9,6 +9,7 @@ public class MemberDTO {
 	private String gender;
 	private String email;
 	private String perm;
+	
 	public String getId() {
 		return id;
 	}
@@ -51,7 +52,6 @@ public class MemberDTO {
 	public void setPerm(String perm) {
 		this.perm = perm;
 	}
-	
 	
 	
 }

@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 	input[name="id"]{
-		width:70%
+	width:70%
 	}
 </style>
 </head>
@@ -70,23 +70,24 @@
 	</form>
 </body>
 <script>
+	var overChk = false;
+	var overId;
+	var pwChk = false;
+
 	var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
 	if(msg != ''){
 		alert(msg);
 	}
 	
-	var overChk = false;
-	var pwChk = false;
-	
 	$('#confirm').on('keyup', function(){
 		if($('input[name="pw"]').val() == $(this).val()){
 			$('#msg').html('비밀번호가 일치합니다.');
 			$('#msg').css({'color' : 'green'});
-			pwchk = true;
+			pwChk = true;
 		}else{
 			$('#msg').html('비밀번호가 일치하지 않습니다.');
 			$('#msg').css({'color' : 'red'});
-			pwchk = false;
+			pwChk = false;
 		}
 	});
 	
@@ -99,10 +100,7 @@
 		var $gender = $('input[name="gender"]:checked');
 		var $email = $('input[name="email"]');
 		
-		if(overChk == false){
-			alert('중복체크를 해주세요.');
-			$id.focus();
-		}else if($id.val() == ''){
+		if($id.val() == ''){
 			alert('아이디를 입력해주세요.');
 			$id.focus();
 		}else if($pw.val() == ''){
@@ -115,47 +113,58 @@
 			alert('나이를 입력해주세요.');
 			$age.focus();
 		}else if($gender.val() == null){
-			alert('성별을 선택해주세요.');
+			alert('성별을 입력해주세요.');
+			$gender.focus();
 		}else if($email.val() == ''){
 			alert('이메일을 입력해주세요.');
 			$email.focus();
+		}else if(overChk == false){
+			alert('중복체크를 해주세요.');
+			$id.focus();
+		}else if($id.val() != overId){
+			alert('중복체크를 해주세요.');
+			$id.focus();
 		}else{
 			
 			if(pwChk == false){
-				alert('비밀번호를 확인 해주세요.');
+				alert('비밀번호 확인을 해주세요.');
 				$('#confirm').focus();
 			}
 			
-			var regExp = new RegExp('a-zA-Zㄱ-ㅎ가-힣')
-			var match = regExp.test($age.val());
+			var regExp = new RegExp('[a-zA-Zㄱ-ㅎ가-힣]'); // 문자 있니
+			var match = regExp.test($age.val()); // 위의 표현식 일치 여부
 			if(match){
-				alert('숫자만 입력해주세요.');
+				alert('숫자만 입력해 주세요!');
 				$age.val('');
 				$age.focus();
 				return false;
 			}
 			
 			console.log('서버로 요청');
-			$('form').submit();
 		}
 		
 	}
 	
+	
 	function overlay(){
 		var id = $('input[name="id"]').val();
+		
 		$.ajax({
 			type: 'post',
-			url: './overlay.do',
+			url: 'overlay.do',
 			data: {'id' : id},
 			dataType: 'json',
 			success: function(data){
 				console.log(data);
-				if(data.use > 0){
-					alert('이미 사용중인 아이디 입니다.');
-					$('input[name="id"]').val('');
+				if(id == ''){
+					alert('아이디를 입력해주세요.');
 					$('input[name="id"]').focus();
+				}else if(data.use > 0){
+					alert('이미 사용중인 아이디입니다.');
+					$('input[name="id"]').val('');
 				}else{
 					alert('사용 가능한 아이디 입니다.');
+					overId = $('input[name="id"]').val();
 					overChk = true;
 				}
 			},
@@ -163,9 +172,9 @@
 				console.log(error);
 			}
 		});
+		
 	}
 	
-
 </script>
 </html>
 

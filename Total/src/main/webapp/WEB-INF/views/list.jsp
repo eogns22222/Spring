@@ -15,20 +15,20 @@
 </head>
 <body>
 	게시판 리스트
-	${loginBox}
-	<button onclick="location.href='write.go'">글쓰기</button>
-	
+	<a href="logout.do">로그아웃</a>
 	<c:if test="${sessionScope.loginInfo.perm eq 'on'}">
 		<a href="member_list">회원리스트 보기</a>
 	</c:if>
 	<hr />
 	<button onclick="del()">선택 삭제</button>
+	
 	<select id="pagePerNum">
 		<option value="5">5</option>
 		<option value="10">10</option>
 		<option value="15">15</option>
 		<option value="20">20</option>
 	</select>
+	<a href="write.go">글쓰기</a>
 	<table>
 		<thead>
 			<tr>
@@ -42,7 +42,7 @@
 			</tr>
 		</thead>
 		<tbody id="list"></tbody>
- 		<tr>
+		<tr>
 			<td colspan="7">
 				<div class="container">
 					<nav aria-label="Page navigation" style="text-align: center">
@@ -51,82 +51,146 @@
 				</div>
 			</td>
 		</tr>
+
 	</table>
 </body>
 <script>
+
 	var showPage = 1;
-	
+
 	$(document).ready(function(){
 		listCall(showPage);
-	});
+	})
 	
 	$('#pagePerNum').on('change', function(){
 		$('#pagination').twbsPagination('destroy');
 		listCall(showPage);
-	});
+	})
 	
 	function listCall(page){
 		$.ajax({
-			type : 'post',
-			url : './list.ajax',
-			data : {
+			type: 'get',
+			url: 'list.ajax',
+			data: {
 				'page' : page,
 				'cnt' : $('#pagePerNum').val()
 			},
-			dataType : 'json',
-			success : function(data) {
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
 				drawList(data.list);
 				
-				var startPage = data.currPage > data.totalPages ? data.totalPages : data.currPage;
+				var startPage = data.currPage > data.totalPage ? data.totalPage : data.currPage
 				
 				$('#pagination').twbsPagination({
-				    startPage: startPage, 
-				    totalPages: data.totalPages, 
-				    visiblePages: 5, 
-				    onPageClick:function(evt, pg){ 
-				       console.log(evt); 
-				       console.log(pg); 
-				       showPage = pg;
-				       listCall(pg);
-				    }
-				 });
+					startPage: startPage,
+					totalPages: data.totalPage,
+					visiblePages: 5,
+					onPageClick: function(evt, pg){
+						showPage = pg;
+						listCall(pg);
+					}
+				});
+				
 			},
-			error : function(error) {
-				console.log('sss');
+			error: function(error){
+				console.log(error);
+			}
+		});
+	}
+
+	
+	function drawList(list){
+		var content = '';
+		
+		for(item of list){
+			
+			content += '<tr>';
+			content += '<td><input type="checkbox" name="del" value="' + item.idx + '" onclick="delEvt()"></td>';
+			content += '<td>' + item.idx + '</td>';
+			
+			var img =  item.img_cnt > 0 ? 'image.png' : 'no_image.png';
+			
+			content += '<td><img class="icon" src="resources/img/' + img + '">';
+			content += '<td><a href="detail.go?idx=' + item.idx + '">' + item.subject + '</a></td>';
+			content += '<td>' + item.user_name + '</td>';
+			content += '<td>' + item.bHit + '</td>';
+
+			var date = new Date(item.reg_date);
+		    var dateStr = date.toLocaleDateString("ko-KR"); //en-US
+		    content += '<td>' + dateStr + '</td>';
+			
+			content += '</tr>';
+			
+		}
+		
+		$('#list').html(content);
+		
+	}
+	
+	
+	$('#all').on('click', function(){
+		var $chk = $('input[name="del"]');
+		
+		if($(this).is(':checked')){
+			$chk.prop('checked', true);
+		}else{
+			$chk.prop('checked', false);
+		}
+	});
+	
+	function delEvt(){
+		var total = $("input[name=del]").length;
+		var checked = $("input[name=del]:checked").length;
+	
+		if(total != checked){
+			$("#all").prop("checked", false);
+		}else {
+			$("#all").prop("checked", true);
+		} 
+	}
+	
+	function del(){
+		var delArr = [];
+		
+		$('input[name="del"]').each(function(index, item){
+			if($(item).is(':checked')){
+				var val = $(this).val();
+				delArr.push(val);
+			}
+		});
+		
+		$.ajax({
+			type: 'post',
+			url: 'del.ajax',
+			data: {'delArr' : delArr},
+			dataType: 'json',
+			success: function(data){
+				if(data.cnt > 0){
+					alert(data.cnt + '개의 파일을 지웠습니다.');
+				}
+				listCall(showPage);
+			},
+			error: function(error){
 				console.log(error);
 			}
 		});
 		
 	}
 	
-	
-    function drawList(list){
-        var content = '';
-        for (item of list) {
 
-            content += '<tr>';
-            content += '<td><input type="checkbox" name="del" value="' + item.idx +'"/></td>';
-            content += '<td>' + item.idx + '</td>';
-
-            var img = item.imt_cnt > 0 ? 'image.png' : 'no_image.png';
-
-            content += '<td><img class="icon" src="resources/img/' + img + '"/></td>';
-            content += '<td><a href="detail?idx=' + item.idx + '">' + item.subject + '</a></td>';
-            content += '<td>' + item.user_name + '</td>';
-            content += '<td>' + item.bHit + '</td>';
-
-            var date = new Date(item.reg_date);
-            var dateStr = date.toLocaleDateString("ko-KR"); //en-US
-
-            content += '<td>' + dateStr + '</td>';
-            content += '</tr>';
-        }
-
-        $('#list').html(content);
-	}
-	
 </script>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 

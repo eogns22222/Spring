@@ -2,37 +2,63 @@
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
+
 <mapper namespace="kr.co.back.board.dao.BoardDAO">
 
 	<select id="list" resultType="kr.co.back.board.dto.BoardDTO">
-		SELECT
-		(SELECT COUNT(new_filename) FROM photo p WHERE p.idx = a.idx) as imt_cnt,
-		a.idx,
-		a.subject,
-		a.user_name,
-		a.bHit,
-		a.reg_date
-		FROM bbs a LIMIT #{param1} OFFSET #{param2}
+		SELECT 
+			idx,
+			(SELECT COUNT(new_filename) FROM photo b WHERE b.idx = a.idx) AS img_cnt,
+			subject,
+			user_name,
+			bHit,
+			reg_date 
+			FROM bbs a LIMIT #{param1} OFFSET #{param2}
 	</select>
 	
-	<select id="allCount" resultType="int">
-		SELECT CEIL(count(idx)/#{param1}) FROM bbs
+	<select id="getFiles" resultType="String">
+		SELECT new_filename FROM photo WHERE idx = #{param1}
+	</select>
+	
+	<delete id="del">
+		DELETE FROM bbs WHERE idx = #{param1}
+	</delete>
+	
+	<select id="allCnt" resultType="int">
+		SELECT CEIL(COUNT(idx)/#{param1}) FROM bbs
 	</select>
 	
 	<insert id="write"
-	useGeneratedKeys="true"
-	keyColumn="idx"
-	keyProperty="idx"
-	parameterType="kr.co.back.board.dto.BoardDTO"
+		useGeneratedKeys="true"
+		keyColumn="idx"
+		keyProperty="idx"
+		parameterType="kr.co.back.board.dto.BoardDTO"
 	>
-		INSERT INTO bbs(subject, user_name, content)
+		INSERT INTO bbs(subject,user_name,content)
 			VALUES(#{subject},#{user_name},#{content})
 	</insert>
 	
-	<insert id="writeFile">
+	<insert id="fileWrite">
 		INSERT INTO photo(ori_filename,new_filename,idx)
 			VALUES(#{param1},#{param2},#{param3})
 	</insert>
+	
+	<select id="detail" resultType="kr.co.back.board.dto.BoardDTO">
+		SELECT idx,bHit,subject,user_name,content FROM bbs WHERE idx = #{param1}
+	</select>
+	
+	<select id="photoWrite" resultType="kr.co.back.board.dto.PhotoDTO">
+		SELECT new_filename FROM photo WHERE idx = #{param1}
+	</select>
+	
+	<update id="upHit">
+		UPDATE bbs SET bHit = bHit + 1 WHERE idx = #{param1}
+	</update>
+	
+	<update id="update" parameterType="map">
+		UPDATE bbs SET subject = #{subject}, user_name = #{user_name}, content = #{content} 
+			WHERE idx = #{idx}
+	</update>
 
 </mapper>
 

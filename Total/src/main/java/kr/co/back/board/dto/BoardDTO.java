@@ -3,15 +3,14 @@ package kr.co.back.board.dto;
 import java.sql.Date;
 
 public class BoardDTO {
-
+	
 	private int idx;
 	private String user_name;
 	private String subject;
 	private String content;
 	private int bHit;
 	private Date reg_date;
-	private int imt_cnt;
-	
+	private int img_cnt;
 	
 	public int getIdx() {
 		return idx;
@@ -49,11 +48,11 @@ public class BoardDTO {
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
-	public int getImt_cnt() {
-		return imt_cnt;
+	public int getImg_cnt() {
+		return img_cnt;
 	}
-	public void setImt_cnt(int imt_cnt) {
-		this.imt_cnt = imt_cnt;
+	public void setImg_cnt(int img_cnt) {
+		this.img_cnt = img_cnt;
 	}
 	
 	

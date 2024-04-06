@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
+
 <mapper namespace="kr.co.back.member.dao.MemberDAO">
-	
+
 	<insert id="join" parameterType="map">
 		INSERT INTO member(id,pw,name,age,gender,email)
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},#{email})
@@ -13,11 +14,7 @@
 		INSERT INTO author(id,perm)
 			VALUES(#{param1},#{param2})
 	</insert>
-	
-	<select id="overlay" resultType="int">
-		SELECT COUNT(id) FROM member WHERE id = #{param}
-	</select>
-	
+
 	<select id="login" resultType="kr.co.back.member.dto.MemberDTO">
 		SELECT 
 			a.id,
@@ -26,11 +23,18 @@
 			FROM member a
 			LEFT JOIN author b
 			ON a.id = b.id
-			WHERE a.id = #{param1} AND a.pw = #{param2}
+			WHERE a.id = #{param1} AND a.pw = #{param2};
 	</select>
 	
-</mapper>
+	<select id="overlay" resultType="int">
+		SELECT COUNT(id) FROM member WHERE id = #{param1};
+	</select>
+	
+	<select id="list" resultType="kr.co.back.member.dto.MemberDTO">
+		SELECT id,name,gender,email,id FROM member
+	</select>
 
+</mapper>
 
 
 
